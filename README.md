@@ -8,15 +8,17 @@ To write a program to implement the Decision Tree Classifier Model for Predictin
 2. Anaconda – Python 3.7 Installation / Jupyter notebook
 
 ## Algorithm
-1. Import the required libraries and create the dataset.
+1.Import required libraries such as Pandas, Matplotlib, and sklearn.
 
-2. Select the input features and target variable.
+2.Load the dataset and define features (X) and target (y).
 
-3. Split the dataset into training data and testing data.
+3.Split the dataset into training and testing sets.
 
-4. Train the SGD Classifier model using training data.
+4.Train the Decision Tree Classifier model.
 
-5. Predict the test data results and find the accuracy of the model.
+5.Predict the output and evaluate accuracy.
+
+6.Visualize the Decision Tree using plot_tree().
 
 
 ## Program:
@@ -29,56 +31,60 @@ RegisterNumber: 212225230224
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
-from sklearn.linear_model import SGDClassifier
-from sklearn.metrics import accuracy_score
-from sklearn.preprocessing import StandardScaler
+from sklearn.tree import DecisionTreeClassifier, plot_tree
+from sklearn.metrics import accuracy_score, classification_report
 
-# Dataset
+# Employee dataset
 data = {
-    'Age': [25, 30, 45, 35, 22, 40, 28, 50, 23, 31],
-    'Salary': [40000, 50000, 80000, 60000, 35000, 90000, 45000, 100000, 30000, 52000],
-    'Years': [1, 5, 10, 7, 2, 12, 3, 15, 1, 6],
-    'Churn': [1, 0, 0, 0, 1, 0, 1, 0, 1, 0]
+    'Experience': [1, 3, 5, 7, 2, 10, 4, 8, 6, 9],
+    'MonthlyHours': [160, 170, 180, 200, 150, 220, 175, 210, 190, 230],
+    'Projects': [2, 3, 5, 6, 2, 8, 4, 7, 5, 9],
+    'Churn': [1, 1, 0, 0, 1, 0, 1, 0, 0, 0]
 }
 
 # Create DataFrame
 df = pd.DataFrame(data)
 
 # Features and Target
-X = df[['Age', 'Salary', 'Years']]
+X = df[['Experience', 'MonthlyHours', 'Projects']]
 y = df['Churn']
 
-# Split data
+# Train-Test Split
 X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=1
+    X, y, test_size=0.2, random_state=42
 )
 
-# Scaling
-sc = StandardScaler()
-X_train = sc.fit_transform(X_train)
-X_test = sc.transform(X_test)
+# Create Decision Tree Classifier
+model = DecisionTreeClassifier(random_state=42)
 
-# SGD Classifier Model
-model = SGDClassifier(random_state=1)
+# Train the model
 model.fit(X_train, y_train)
 
-# Prediction
+# Predict the test data
 y_pred = model.predict(X_test)
 
-# Accuracy
+# Model Evaluation
 print("Accuracy:", accuracy_score(y_test, y_pred))
 
-# Plot
-plt.plot(y_test.values)
-plt.plot(y_pred)
-plt.title("SGD Classifier")
-plt.show() 
-*/
+print("\nClassification Report:\n")
+print(classification_report(y_test, y_pred))
+
+# Decision Tree Diagram
+plt.figure(figsize=(12, 6))
+
+plot_tree(
+    model,
+    feature_names=['Experience', 'MonthlyHours', 'Projects'],
+    class_names=['No Churn', 'Churn'],
+    filled=True
+)
+
+plt.title("Decision Tree for Employee Churn Prediction")
+plt.show()
 ```
 
 ## Output:
-
-<img width="741" height="472" alt="image" src="https://github.com/user-attachments/assets/4fbd8920-e46a-4657-9b90-7a465f2083e5" />
+<img width="1128" height="747" alt="Screenshot 2026-05-19 143012" src="https://github.com/user-attachments/assets/ebf1f9c2-bbf4-48bd-a6cf-4e53fb1c3c94" />
 
 
 ## Result:
